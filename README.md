@@ -26,44 +26,53 @@ Built with Python + Tkinter. Runs on **Windows**, **Linux** and **macOS**.
 
 ## Installation
 
-### Option 1 — Pre-built binaries (recommended)
+SerialB runs on **Windows, Linux and macOS** — it's pure Python + Tkinter, no platform-specific code. There are no ready-made installers for every platform: build it yourself from source (see Building).
 
-Grab the latest release for your platform from the [**Releases**](../../releases) page:
+### Windows
 
-- `SerialB.exe` — Windows
-- `SerialB` — Linux
-- `SerialB.app` — macOS
+Grab the pre-built `SerialB.exe` from the Releases page — no Python needed. Just run it.
 
-Unpack, put next to it the `lang/` folder if you want external language files (optional — English is embedded), run.
+### Linux and macOS
 
-### Option 2 — From source
+Clone the repo and run:
 
-```bash
-git clone https://github.com/Borisovith/SerialB.git
-cd SerialB
-pip install -r requirements.txt
-python main.py
-```
+    git clone https://github.com/Borisovith/SerialB.git
+    cd SerialB
+    pip install -r requirements.txt
+    python main.py
 
-Requirements:
+Requirements (all platforms):
+
 - Python **3.10+** with `tkinter`
 - `pyserial`
+
+> Want a single-file binary? See the Building section. PyInstaller is not a cross-compiler, so build it on the target OS — Windows build on Windows, Linux on Linux, macOS on macOS.
 
 ---
 
 ## Building
 
-See **[Build.txt](Build.txt)** (English) or **[Build_RU.txt](Build_RU.txt)** (Русский) for detailed instructions.
+See **Build.txt** (English) or **Build_RU.txt** (Russian) for detailed instructions.
 
-Quick reference:
+PyInstaller is **not** a cross-compiler — build on the target OS.
 
-| Platform | Build on | Command | Result |
-|----------|----------|---------|--------|
-| Windows  | Windows  | `pyinstaller --onefile --windowed --name SerialB --icon=serialb.ico --add-data "lang;lang" main.py` | `dist\SerialB.exe` |
-| Linux    | Linux    | `pyinstaller --onefile --windowed --name SerialB --add-data "lang:lang" main.py` | `dist/SerialB` |
-| macOS    | macOS    | `pyinstaller --windowed --name SerialB --icon=serialb.icns --add-data "lang:lang" main.py` | `dist/SerialB.app` |
+### Windows
 
-> PyInstaller is **not** a cross-compiler — build on the target OS.
+    pyinstaller --onefile --windowed --name SerialB --icon=serialb.ico --add-data "lang;lang" --add-data "serialb.ico;." --add-data "serialb.png;." --add-data "SerialB_Manual_EN.html;." --add-data "SerialB_Manual_RU.html;." --clean main.py
+
+Result: `dist\SerialB.exe`
+
+### Linux
+
+    pyinstaller --onefile --windowed --name SerialB --add-data "lang:lang" --add-data "SerialB_Manual_EN.html:." --add-data "SerialB_Manual_RU.html:." --clean main.py
+
+Result: `dist/SerialB`
+
+### macOS
+
+    pyinstaller --windowed --name SerialB --icon=serialb.icns --add-data "lang:lang" --add-data "SerialB_Manual_EN.html:." --add-data "SerialB_Manual_RU.html:." --clean main.py
+
+Result: `dist/SerialB.app`
 
 ---
 
@@ -71,7 +80,7 @@ Quick reference:
 
 1. Launch **SerialB**.
 2. Pick your port and baud rate, click **Connect**.
-3. Open **⚙ Settings** to configure:
+3. Open **Settings** to configure:
    - **Macros** — up to 6 quick commands
    - **Triggers** — auto-freeze on stop-words
    - **Keywords** — text highlighting rules
@@ -88,7 +97,7 @@ Quick reference:
 | `Ctrl` + `=` / `-` | Increase / decrease log font size |
 | `Ctrl` + `0` | Reset font size |
 | `Ctrl` + mouse wheel | Smooth font resize |
-| `↑` / `↓` in command field | Command history |
+| `Up` / `Down` in command field | Command history |
 | `Enter` / `Shift+Enter` in search | Next / previous match |
 | `Esc` in search | Clear search |
 
@@ -96,36 +105,34 @@ Quick reference:
 
 ## Project structure
 
-```
-SerialB/
-├── main.py                 # entry point
-├── app.py                  # application class (glues everything)
-├── layouts.py              # main window — UI only
-├── layouts_settings.py     # settings window — UI only
-├── monitor_logic.py        # log processing / highlighting / search
-├── monitor_config.py       # config save/load + localization
-├── serial_core.py          # serial port I/O
-├── shortcuts.py            # global hotkeys
-├── theme.py                # palettes + system theme detection
-├── lang/                   # language files (embedded + external)
-│   ├── en.json
-│   ├── de.json
-│   ├── uk.json
-│   └── ru.json
-├── serialb.ico / .png / .icns
-├── Build.txt / Build_RU.txt
-├── SerialB_Manual_EN.html
-└── SerialB_Manual_RU.html
-```
+    SerialB/
+    ├── main.py                 # entry point
+    ├── app.py                  # application class (glues everything)
+    ├── layouts.py              # main window — UI only
+    ├── layouts_settings.py     # settings window — UI only
+    ├── monitor_logic.py        # log processing / highlighting / search
+    ├── monitor_config.py       # config save/load + localization
+    ├── serial_core.py          # serial port I/O
+    ├── shortcuts.py            # global hotkeys
+    ├── theme.py                # palettes + system theme detection
+    ├── lang/                   # language files (embedded + external)
+    │   ├── en.json
+    │   ├── de.json
+    │   ├── uk.json
+    │   └── ru.json
+    ├── serialb.ico / .png / .icns
+    ├── Build.txt / Build_RU.txt
+    ├── SerialB_Manual_EN.html
+    └── SerialB_Manual_RU.html
 
 ---
 
 ## Documentation
 
-- 🇬🇧 [User Manual (English)](SerialB_Manual_EN.html)
-- 🇷🇺 [Руководство пользователя (Русский)](SerialB_Manual_RU.html)
-- 🇬🇧 [Build Instructions (English)](Build.txt)
-- 🇷🇺 [Инструкция по сборке (Русский)](Build_RU.txt)
+- User Manual (English): SerialB_Manual_EN.html
+- User Manual (Russian): SerialB_Manual_RU.html
+- Build Instructions (English): Build.txt
+- Build Instructions (Russian): Build_RU.txt
 
 ---
 
