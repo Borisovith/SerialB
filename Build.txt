@@ -1,0 +1,101 @@
+================================================================
+                        SerialB — BUILD
+================================================================
+
+----------------------------------------------------------------
+PREPARATION (one-time)
+----------------------------------------------------------------
+
+1. Python 3.10+ (with tkinter)
+      Windows :  https://www.python.org/downloads/
+                 during install, check "Add to PATH"
+                 and "tcl/tk and IDLE"
+      Linux   :  sudo apt install python3 python3-pip python3-tk
+      macOS   :  brew install python-tk
+
+2. Project dependencies
+      pip install pyserial
+
+3. Build tool
+      pip install pyinstaller
+
+4. (optional) Pillow — only if you want to regenerate the .ico
+      pip install Pillow
+      python generate_icon.py
+
+----------------------------------------------------------------
+Windows
+----------------------------------------------------------------
+Build on     :  Windows
+Clean first  :  rmdir /S /Q build dist
+                del SerialB.spec
+Command      :  pyinstaller --onefile --windowed --name SerialB --icon=serialb.ico --add-data "lang;lang" --add-data "serialb.ico;." --add-data "serialb.png;." --add-data "SerialB_Manual_EN.html;." --add-data "SerialB_Manual_RU.html;." --clean main.py
+Output       :  dist\SerialB.exe
+
+----------------------------------------------------------------
+Linux
+----------------------------------------------------------------
+Build on     :  Linux
+Clean first  :  rm -rf build dist SerialB.spec
+Command      :  pyinstaller --onefile --windowed --name SerialB --add-data "lang:lang" --add-data "SerialB_Manual_EN.html:." --add-data "SerialB_Manual_RU.html:." --clean main.py
+Output       :  dist/SerialB
+
+----------------------------------------------------------------
+macOS
+----------------------------------------------------------------
+Build on     :  macOS
+Clean first  :  rm -rf build dist SerialB.spec
+Command      :  pyinstaller --windowed --name SerialB --icon=serialb.icns --add-data "lang:lang" --add-data "SerialB_Manual_EN.html:." --add-data "SerialB_Manual_RU.html:." --clean main.py
+Output       :  dist/SerialB.app
+
+================================================================
+NOTES
+================================================================
+
+• Commands are one-liners. Copy, paste, Enter.
+  Do not split them across lines unless you add the correct
+  line-continuation symbol:
+      PowerShell    →  `   (backtick)
+      cmd.exe       →  ^
+      Linux/macOS   →  \
+
+• PyInstaller is NOT a cross-compiler:
+  build on Windows for Windows, on Linux for Linux,
+  on macOS for macOS.
+
+• --add-data embeds resources into the binary:
+      - lang/                    → language files
+      - serialb.ico / .png       → window + tray icons
+      - SerialB_Manual_*.html    → user manuals (About → Documentation)
+
+  Path separator:
+      Windows       →  "source;destination"
+      Linux/macOS   →  "source:destination"
+
+• Icon troubleshooting (Windows):
+  If the tray/taskbar still shows the default Tkinter feather,
+  your .ico probably contains only one size. A proper .ico
+  must include at least 16×16, 24×24, 32×32, 48×48, 256×256.
+  Regenerate it with:
+      pip install Pillow
+      python generate_icon.py
+  Verify:
+      python -c "from PIL import Image; print(Image.open('serialb.ico').info.get('sizes'))"
+  Then rebuild with --clean.
+
+• Windows icon cache:
+  Even a correct .ico may be hidden by the icon cache.
+  Rename SerialB.exe temporarily, or run in cmd as admin:
+      taskkill /f /im explorer.exe
+      del /a "%localappdata%\IconCache.db"
+      del /a "%localappdata%\Microsoft\Windows\Explorer\iconcache*"
+      start explorer.exe
+
+• A lang/ folder next to the exe overrides the embedded one.
+
+• config.json is created next to the binary on the first save.
+
+• macOS: cannot combine --onefile and --windowed for .app.
+  Use --onedir (default).
+
+================================================================

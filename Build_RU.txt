@@ -1,0 +1,99 @@
+================================================================
+                        SerialB — СБОРКА
+================================================================
+
+----------------------------------------------------------------
+ПОДГОТОВКА (один раз)
+----------------------------------------------------------------
+
+1. Python 3.10+ (с tkinter)
+      Windows :  https://www.python.org/downloads/
+                 при установке поставить галки "Add to PATH"
+                 и "tcl/tk and IDLE"
+      Linux   :  sudo apt install python3 python3-pip python3-tk
+      macOS   :  brew install python-tk
+
+2. Зависимости проекта
+      pip install pyserial
+
+3. Утилита сборки
+      pip install pyinstaller
+
+4. (опционально) Pillow — только если нужно пересобрать .ico
+      pip install Pillow
+      python generate_icon.py
+
+----------------------------------------------------------------
+Windows
+----------------------------------------------------------------
+Где собирать :  Windows
+Сначала чистим:  rmdir /S /Q build dist
+                 del SerialB.spec
+Команда      :  pyinstaller --onefile --windowed --name SerialB --icon=serialb.ico --add-data "lang;lang" --add-data "serialb.ico;." --add-data "serialb.png;." --add-data "SerialB_Manual_EN.html;." --add-data "SerialB_Manual_RU.html;." --clean main.py
+Результат    :  dist\SerialB.exe
+
+----------------------------------------------------------------
+Linux
+----------------------------------------------------------------
+Где собирать :  Linux
+Сначала чистим:  rm -rf build dist SerialB.spec
+Команда      :  pyinstaller --onefile --windowed --name SerialB --add-data "lang:lang" --add-data "SerialB_Manual_EN.html:." --add-data "SerialB_Manual_RU.html:." --clean main.py
+Результат    :  dist/SerialB
+
+----------------------------------------------------------------
+macOS
+----------------------------------------------------------------
+Где собирать :  macOS
+Сначала чистим:  rm -rf build dist SerialB.spec
+Команда      :  pyinstaller --windowed --name SerialB --icon=serialb.icns --add-data "lang:lang" --add-data "SerialB_Manual_EN.html:." --add-data "SerialB_Manual_RU.html:." --clean main.py
+Результат    :  dist/SerialB.app
+
+================================================================
+ПРИМЕЧАНИЯ
+================================================================
+
+• Команды — одной строкой. Копируй целиком, вставляй, Enter.
+  Не разбивай на строки, если не добавил символ переноса:
+      PowerShell    →  `   (обратный апостроф)
+      cmd.exe       →  ^
+      Linux/macOS   →  \
+
+• PyInstaller НЕ кросс-компилятор:
+  для Windows собирать на Windows, для Linux — на Linux,
+  для macOS — на macOS.
+
+• --add-data вшивает ресурсы в бинарник:
+      - lang/                    → языковые файлы
+      - serialb.ico / .png       → иконки окна и трея
+      - SerialB_Manual_*.html    → мануалы (About → Documentation)
+
+  Разделитель пути:
+      Windows       →  "источник;назначение"
+      Linux/macOS   →  "источник:назначение"
+
+• Если в трее/таскбаре Windows всё ещё «перо» Tkinter:
+  скорее всего в .ico вшит только один размер. Правильный .ico
+  должен содержать минимум 16×16, 24×24, 32×32, 48×48, 256×256.
+  Пересобери его:
+      pip install Pillow
+      python generate_icon.py
+  Проверка:
+      python -c "from PIL import Image; print(Image.open('serialb.ico').info.get('sizes'))"
+  Затем пересобери exe с флагом --clean.
+
+• Кеш иконок Windows:
+  Даже правильный .ico может быть скрыт кешем. Переименуй
+  SerialB.exe временно или в cmd (от админа):
+      taskkill /f /im explorer.exe
+      del /a "%localappdata%\IconCache.db"
+      del /a "%localappdata%\Microsoft\Windows\Explorer\iconcache*"
+      start explorer.exe
+
+• Папка lang/ рядом с exe перекрывает вшитую.
+
+• config.json создаётся рядом с бинарником при первом сохранении.
+
+• macOS: нельзя сочетать --onefile и --windowed для .app.
+  Используй --onedir (по умолчанию).
+
+================================================================

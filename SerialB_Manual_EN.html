@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SerialB — User Manual</title>
+<style>
+    :root {
+        --bg: #1e1e1e;
+        --panel: #252526;
+        --widget: #333333;
+        --text: #d4d4d4;
+        --muted: #888888;
+        --accent: #4ec9b0;
+        --primary: #0e639c;
+        --danger: #a1260d;
+        --success: #2d7d46;
+        --warn: #b8860b;
+    }
+    * { box-sizing: border-box; }
+    body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Segoe UI", -apple-system, sans-serif;
+        font-size: 15px;
+        line-height: 1.6;
+    }
+    header {
+        background: var(--panel);
+        padding: 40px 60px;
+        border-bottom: 3px solid var(--primary);
+    }
+    header h1 {
+        margin: 0 0 8px 0;
+        color: var(--accent);
+        font-size: 32px;
+    }
+    header p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 15px;
+    }
+    .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 40px 60px 80px;
+    }
+    nav.toc {
+        background: var(--panel);
+        padding: 20px 30px;
+        border-radius: 6px;
+        margin-bottom: 40px;
+        border-left: 4px solid var(--primary);
+    }
+    nav.toc h2 {
+        margin: 0 0 12px 0;
+        font-size: 18px;
+        color: var(--accent);
+    }
+    nav.toc ul {
+        margin: 0;
+        padding-left: 20px;
+        columns: 2;
+        column-gap: 30px;
+    }
+    nav.toc a {
+        color: var(--text);
+        text-decoration: none;
+    }
+    nav.toc a:hover {
+        color: var(--accent);
+        text-decoration: underline;
+    }
+    h2 {
+        color: var(--accent);
+        border-bottom: 2px solid var(--widget);
+        padding-bottom: 8px;
+        margin-top: 50px;
+        font-size: 24px;
+    }
+    h3 {
+        color: var(--text);
+        margin-top: 30px;
+        font-size: 18px;
+    }
+    h4 {
+        color: var(--accent);
+        margin-top: 20px;
+        font-size: 15px;
+        margin-bottom: 6px;
+    }
+    p { margin: 8px 0; }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 15px 0;
+        background: var(--panel);
+        border-radius: 4px;
+        overflow: hidden;
+    }
+    th, td {
+        text-align: left;
+        padding: 10px 14px;
+        border-bottom: 1px solid var(--widget);
+        vertical-align: top;
+    }
+    th {
+        background: var(--widget);
+        color: var(--accent);
+        font-weight: 600;
+    }
+    tr:last-child td { border-bottom: none; }
+    code {
+        background: #000;
+        color: var(--accent);
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-family: Consolas, monospace;
+        font-size: 13px;
+    }
+    .btn {
+        display: inline-block;
+        background: var(--primary);
+        color: #fff;
+        padding: 2px 10px;
+        border-radius: 3px;
+        font-family: Consolas, monospace;
+        font-size: 12px;
+        font-weight: 600;
+    }
+    .btn.idle { background: var(--widget); }
+    .btn.danger { background: var(--danger); }
+    .btn.success { background: var(--success); }
+    .btn.warn { background: var(--warn); color: #000; }
+    .note {
+        background: var(--panel);
+        border-left: 4px solid var(--accent);
+        padding: 12px 18px;
+        margin: 15px 0;
+        border-radius: 0 4px 4px 0;
+    }
+    .warning {
+        background: var(--panel);
+        border-left: 4px solid var(--warn);
+        padding: 12px 18px;
+        margin: 15px 0;
+        border-radius: 0 4px 4px 0;
+    }
+    .kbd {
+        display: inline-block;
+        background: #111;
+        border: 1px solid #444;
+        border-bottom-width: 2px;
+        border-radius: 4px;
+        padding: 1px 6px;
+        font-family: Consolas, monospace;
+        font-size: 12px;
+        color: #fff;
+    }
+    .screenshot {
+        background: var(--panel);
+        border: 1px solid var(--widget);
+        border-radius: 6px;
+        padding: 20px 25px;
+        margin: 15px 0;
+        font-family: Consolas, monospace;
+        font-size: 13px;
+        color: var(--accent);
+        white-space: pre;
+        overflow-x: auto;
+    }
+    footer {
+        text-align: center;
+        padding: 30px;
+        color: var(--muted);
+        font-size: 13px;
+        border-top: 1px solid var(--widget);
+    }
+</style>
+</head>
+<body>
+
+<header>
+    <h1>SerialB</h1>
+    <p>User Manual · Serial Monitor with highlighting, triggers &amp; macros</p>
+</header>
+
+<div class="container">
+
+<nav class="toc">
+    <h2>Contents</h2>
+    <ul>
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#main-window">Main window</a></li>
+        <li><a href="#top-bar">Top bar</a></li>
+        <li><a href="#macro-bar">Macro bar</a></li>
+        <li><a href="#side-panel">Side panel</a></li>
+        <li><a href="#log-area">Log area</a></li>
+        <li><a href="#bottom-bar">Bottom bar</a></li>
+        <li><a href="#settings">Settings window</a></li>
+        <li><a href="#tab-macros">Tab «Macros»</a></li>
+        <li><a href="#tab-triggers">Tab «Triggers»</a></li>
+        <li><a href="#tab-highlights">Tab «Keywords»</a></li>
+        <li><a href="#tab-ranges">Tab «Numeric ranges»</a></li>
+        <li><a href="#tab-deltas">Tab «Intervals»</a></li>
+        <li><a href="#tab-general">Tab «General»</a></li>
+        <li><a href="#tab-about">Tab «About»</a></li>
+        <li><a href="#tab-lang">Tab «Language»</a></li>
+        <li><a href="#dialogs">Rule dialogs</a></li>
+        <li><a href="#hotkeys">Hotkeys</a></li>
+        <li><a href="#config">Files &amp; settings</a></li>
+        <li><a href="#faq">FAQ</a></li>
+    </ul>
+</nav>
+
+<!-- ============================================================ -->
+
+<h2 id="overview">Overview</h2>
+<p><b>SerialB</b> is an advanced serial port monitor with:</p>
+<ul>
+    <li>highlighting by keywords and numeric ranges;</li>
+    <li>triggers (auto-freeze on a matching word);</li>
+    <li>macros (quick commands on a single button);</li>
+    <li>customizable themes (dark / light / system);</li>
+    <li>search with inline highlighting of all matches;</li>
+    <li>multi-language UI (EN / DE / UK / RU).</li>
+</ul>
+<p>Configuration is stored next to the application in <code>config.json</code>. Languages live in the <code>lang/</code> folder.</p>
+
+<!-- ============================================================ -->
+
+<h2 id="main-window">Main window</h2>
+<p>The main window is divided into 5 zones:</p>
+
+<div class="screenshot">┌──────────────────────────────────────────────────────────────┐
+│ TOP BAR — port, baud rate, connect, timeout                  │
+├──────────────────────────────────────────────────────────────┤
+│ MACRO BAR — quick command buttons + Settings                 │
+├──────────┬───────────────────────────────────────────────────┤
+│ SIDE     │                                                   │
+│ PANEL    │                LOG AREA                           │
+│ (buttons)│                (log text)                         │
+│          │                                                   │
+├──────────┴───────────────────────────────────────────────────┤
+│ BOTTOM BAR — search, counter, command, send                  │
+└──────────────────────────────────────────────────────────────┘</div>
+
+<!-- ============================================================ -->
+
+<h2 id="top-bar">Top bar</h2>
+
+<table>
+    <tr>
+        <th style="width:220px">Element</th>
+        <th>Purpose</th>
+    </tr>
+    <tr>
+        <td><b>Port:</b> (Combobox)</td>
+        <td>List of available COM / tty ports. Refresh with <span class="btn idle">🔄 Refresh</span>.</td>
+    </tr>
+    <tr>
+        <td><span class="btn idle">🔄 Refresh</span></td>
+        <td>Re-scan available ports and repopulate the list.</td>
+    </tr>
+    <tr>
+        <td><b>Baud rate:</b> (Combobox)</td>
+        <td>Port speed. Common values: 300 … 2000000. Default is 115200.</td>
+    </tr>
+    <tr>
+        <td><span class="btn">🔌 Connect</span></td>
+        <td>Open the port with the selected baud rate. If «Reset on connect» is enabled, the board will be rebooted.</td>
+    </tr>
+    <tr>
+        <td><span class="btn idle">❌ Disconnect</span></td>
+        <td>Close the port. Disabled while no connection is active.</td>
+    </tr>
+    <tr>
+        <td>Indicator ● <i>Online / Offline</i></td>
+        <td>Circle to the left of the label:
+            <br>● grey — disconnected;
+            <br>● green — port is open.</td>
+    </tr>
+    <tr>
+        <td>☑ <b>Reset on connect</b></td>
+        <td>When enabled, a DTR/RTS pulse is sent on connect and the ESP32 reboots. Useful to catch logs from the very start.</td>
+    </tr>
+    <tr>
+        <td>☑ <b>Auto-connect</b></td>
+        <td>When enabled, the app connects automatically as soon as the port appears. When the port disappears, it waits for it to return.</td>
+    </tr>
+    <tr>
+        <td><b>Packet timeout:</b> (slider + field)</td>
+        <td>Wait time for data from the port (ms). Smaller — faster reaction, more CPU. Larger — fewer empty reads. Default is 50 ms.</td>
+    </tr>
+</table>
+
+<div class="note">
+    <b>Timeout</b> can be typed manually or set with the slider. The value is saved to <code>config.json</code> and restored on the next launch.
+</div>
+
+<!-- ============================================================ -->
+
+<h2 id="macro-bar">Macro bar</h2>
+
+<table>
+    <tr>
+        <th style="width:220px">Element</th>
+        <th>Purpose</th>
+    </tr>
+    <tr>
+        <td><span class="btn idle">Macro 1..6</span></td>
+        <td>Sends a saved command to the port. The label comes from the «Name» field in the macro settings; falls back to <i>Macro N</i>.</td>
+    </tr>
+    <tr>
+        <td><span class="btn">⚙ Settings</span></td>
+        <td>Open the Settings window.</td>
+    </tr>
+</table>
+
+<!-- ============================================================ -->
+
+<h2 id="side-panel">Side panel</h2>
+
+<table>
+    <tr>
+        <th style="width:280px">Button / checkbox</th>
+        <th>Purpose</th>
+    </tr>
+    <tr>
+        <td><span class="btn idle">⏸ Freeze scroll</span></td>
+        <td>Freeze the log view: new lines still arrive in the buffer, but the viewport does not scroll. Good for reading without «runaway» text.</td>
+    </tr>
+    <tr>
+        <td>☑ <b>Show RX (Input)</b></td>
+        <td>Show lines received from the device.</td>
+    </tr>
+    <tr>
+        <td>☑ <b>Show TX (Output)</b></td>
+        <td>Show lines sent to the device.</td>
+    </tr>
+    <tr>
+        <td><span class="btn idle">🗑 Clear log</span></td>
+        <td>Clear the log buffer and the screen completely.</td>
+    </tr>
+    <tr>
+        <td><span class="btn idle">⟳ Reset ESP</span></td>
+        <td>Hardware reset of the ESP32 via DTR/RTS. Works only while the port is open.</td>
+    </tr>
+    <tr>
+        <td><span class="btn success">⏱ Timestamp: ON</span></td>
+        <td>Show a timestamp <code>[HH:MM:SS.mmm]</code> in front of every line. The button turns green when active.</td>
+    </tr>
+    <tr>
+        <td><span class="btn idle">Δ Interval: OFF</span></td>
+        <td>Show the delay between consecutive lines <code>[+NNNms]</code>. The button turns green when active.</td>
+    </tr>
+    <tr>
+        <td><span class="btn idle">📋 To clipboard</span></td>
+        <td>Copy the whole log (all buffered lines) to the clipboard.</td>
+    </tr>
+    <tr>
+        <td><span class="btn idle">💾 To .txt file</span></td>
+        <td>Save the whole log to a text file.</td>
+    </tr>
+    <tr>
+        <td><b>Lines: N / M (max K)</b></td>
+        <td>Line counter:
+            <br><b>N</b> — visible lines (after filtering);
+            <br><b>M</b> — total in the buffer;
+            <br><b>K</b> — auto-cleanup limit.</td>
+    </tr>
+    <tr>
+        <td><span class="btn idle">⚙</span></td>
+        <td>Quick jump to Settings → «General» tab (where the line limit is set).</td>
+    </tr>
+</table>
+
+<!-- ============================================================ -->
+
+<h2 id="log-area">Log area</h2>
+<p>Main output field. Supports:</p>
+<ul>
+    <li><b>Highlighting</b> by keyword rules (blue / red / yellow text);</li>
+    <li><b>Highlighting</b> of numeric ranges (e.g. values 2–4 may be teal);</li>
+    <li><b>Highlighting</b> of intervals (e.g. delays 100–1000 ms in yellow);</li>
+    <li><b>Search with inline highlight</b> (yellow background for all matches, orange for the active one);</li>
+    <li><b>Mouse selection</b> and a context menu (right-click → «Copy selection»).</li>
+</ul>
+
+<h4>Line format</h4>
+<div class="screenshot">[HH:MM:SS.mmm] [+NNNms] [RX] Log text</div>
+<p>Timestamp and interval are optional — toggle them with buttons in the side panel.</p>
+
+<h4>Line tags</h4>
+<table>
+    <tr><th>Tag</th><th>Meaning</th></tr>
+    <tr><td><code>[RX]</code></td><td>Data received from the board.</td></tr>
+    <tr><td><code>[TX]</code></td><td>Data sent to the board.</td></tr>
+    <tr><td><code>[System]</code></td><td>Application-level messages (connect / disconnect).</td></tr>
+    <tr><td><code>[Trigger]</code></td><td>A trigger rule fired.</td></tr>
+    <tr><td><code>[Action]</code></td><td>User actions (ESP reset).</td></tr>
+    <tr><td><code>[Error]</code></td><td>Port or connection error.</td></tr>
+</table>
+
+<!-- ============================================================ -->
+
+<h2 id="bottom-bar">Bottom bar</h2>
+
+<table>
+    <tr>
+        <th style="width:220px">Element</th>
+        <th>Purpose</th>
+    </tr>
+    <tr>
+        <td><b>🔍 Search:</b> (input field)</td>
+        <td>Line filter: only lines containing the substring are shown. <b>At the same time</b>, all matches in the log are highlighted.
+            <br><span class="kbd">Enter</span> — next match;
+            <span class="kbd">Shift</span>+<span class="kbd">Enter</span> — previous match;
+            <span class="kbd">Esc</span> — clear.</td>
+    </tr>
+    <tr>
+        <td><span class="btn idle">◀</span> <span class="btn idle">▶</span></td>
+        <td>Navigate through matches (previous / next).</td>
+    </tr>
+    <tr>
+        <td><b>0 / 0</b></td>
+        <td>Match counter: current / total.</td>
+    </tr>
+    <tr>
+        <td><b>💬 Command:</b> (input field)</td>
+        <td>Line to send to the port. History with <span class="kbd">↑</span> / <span class="kbd">↓</span>.
+            <br><span class="kbd">Enter</span> — send.</td>
+    </tr>
+    <tr>
+        <td><span class="btn">Send ➔</span></td>
+        <td>Send the entered command to the port (CRLF is appended automatically).</td>
+    </tr>
+</table>
+
+<!-- ============================================================ -->
+
+<h2 id="settings">Settings window</h2>
+<p>Opened from <span class="btn">⚙ Settings</span> or from <span class="btn idle">⚙</span> next to the line counter. Contains 8 tabs:</p>
+
+<ul>
+    <li><a href="#tab-macros">⚡ Macros</a></li>
+    <li><a href="#tab-triggers">🛑 Triggers</a></li>
+    <li><a href="#tab-highlights">🎨 Keywords</a></li>
+    <li><a href="#tab-ranges">📊 Numeric ranges</a></li>
+    <li><a href="#tab-deltas">⏱ Intervals</a></li>
+    <li><a href="#tab-general">📋 General</a></li>
+    <li><a href="#tab-about">ℹ About</a></li>
+    <li><a href="#tab-lang">🌐 Language</a></li>
+</ul>
+
+<p>At the bottom — <span class="btn">💾 Save all settings</span>. Changes take effect after it is pressed.</p>
+
+<!-- ============================================================ -->
+
+<h2 id="tab-macros">Tab «⚡ Macros»</h2>
+<p>Six pairs of fields: <b>Name</b> + <b>Command</b>.</p>
+<table>
+    <tr><th style="width:180px">Field</th><th>Description</th></tr>
+    <tr><td><b>Name</b></td><td>Label shown on the macro button in the main window.</td></tr>
+    <tr><td><b>Command</b></td><td>What to send to the port on click. CRLF is appended automatically.</td></tr>
+</table>
+<p><b>Example:</b></p>
+<div class="screenshot">Name:    WiFi Scan
+Command: AT+CWLAP</div>
+
+<!-- ============================================================ -->
+
+<h2 id="tab-triggers">Tab «🛑 Triggers»</h2>
+<p>A trigger is a «stop word». As soon as it appears in an RX line, the log is <b>automatically frozen</b> (scrolling stops) and a system message is appended.</p>
+
+<table>
+    <tr><th style="width:180px">Button</th><th>Action</th></tr>
+    <tr><td><span class="btn">Add</span></td><td>Create a new stop word.</td></tr>
+    <tr><td><span class="btn idle">Edit</span></td><td>Edit the selected trigger.</td></tr>
+    <tr><td><span class="btn danger">Delete</span></td><td>Delete the selected trigger.</td></tr>
+</table>
+
+<p>Each list entry looks like:</p>
+<div class="screenshot">✔ [Active]  ➔  guru meditation error</div>
+
+<h4>Trigger dialog fields</h4>
+<ul>
+    <li><b>Active</b> — enable / disable the rule without deleting it.</li>
+    <li><b>Stop word (trigger)</b> — the text that fires the rule.</li>
+</ul>
+
+<!-- ============================================================ -->
+
+<h2 id="tab-highlights">Tab «🎨 Keywords»</h2>
+<p>Text-highlighting rules. For example, «ERROR» → red, «WARNING» → yellow.</p>
+
+<h4>Rule structure</h4>
+<table>
+    <tr><th style="width:200px">Field</th><th>Description</th></tr>
+    <tr><td><b>Active</b></td><td>Enable / disable the rule.</td></tr>
+    <tr><td><b>Word or phrase</b></td><td>What to look for in a log line.</td></tr>
+    <tr><td><b>Part of word</b></td><td>Search as a substring (e.g. «err» matches «error», «errors», «stderr»).</td></tr>
+    <tr><td><b>Exact word</b></td><td>Search as a whole word (won't match «error» inside «error_handler»).</td></tr>
+    <tr><td><b>Highlight whole line</b></td><td>Color the entire line.</td></tr>
+    <tr><td><b>Word boundaries</b></td><td>Color only the match (or the surrounding word — '=' is treated as part of a word).</td></tr>
+    <tr><td><b>Text color</b></td><td>Pick a color from the palette.</td></tr>
+</table>
+
+<div class="note">
+    If no keyword rule fires, highlighting from the «Numeric ranges» tab is applied.
+</div>
+
+<!-- ============================================================ -->
+
+<h2 id="tab-ranges">Tab «📊 Numeric ranges»</h2>
+<p>Colors numbers that fall into a given range. For example, values 2–4 → teal.</p>
+
+<table>
+    <tr><th style="width:200px">Field</th><th>Description</th></tr>
+    <tr><td><b>From / To</b></td><td>Range boundaries (inclusive). Negative and fractional numbers are supported.</td></tr>
+    <tr><td><b>Highlight whole line</b> / <b>Word boundaries</b></td><td>Same as in the keyword rules.</td></tr>
+    <tr><td><b>Highlight color</b></td><td>Color for matching numbers.</td></tr>
+</table>
+
+<p>List entry:</p>
+<div class="screenshot">[✔] From 2.0 to 4.0 | Area: word boundaries | Color: #4ec9b0</div>
+
+<!-- ============================================================ -->
+
+<h2 id="tab-deltas">Tab «⏱ Intervals»</h2>
+<p>Colors the interval label <code>[+NNNms]</code> when it falls into the specified range. Works only when «Δ Interval» is enabled.</p>
+
+<table>
+    <tr><th style="width:200px">Field</th><th>Description</th></tr>
+    <tr><td><b>From (ms) / To (ms)</b></td><td>Interval boundaries.</td></tr>
+    <tr><td><b>Highlight color</b></td><td>Color of the <code>[+NNNms]</code> label.</td></tr>
+</table>
+
+<p><b>Example:</b> rule «From 100 to 1000» with color <code>#cca700</code> — a delay of 500 ms makes the <code>[+500ms]</code> label yellow.</p>
+
+<!-- ============================================================ -->
+
+<h2 id="tab-general">Tab «📋 General»</h2>
+
+<h4>Maximum lines in log</h4>
+<p>Auto-cleanup limit. When the buffer reaches this size, oldest lines are dropped as new ones arrive. Minimum — 100, default — 5000.</p>
+
+<h4>Log font size</h4>
+<p>Slider from 6 to 32 pt plus a field for an exact value (6–48 pt). Applied <b>immediately</b>, saved to the config when the Settings window is closed.</p>
+
+<h4>Theme</h4>
+<p>Three options:</p>
+<table>
+    <tr><th style="width:200px">Option</th><th>Description</th></tr>
+    <tr><td><b>System</b></td><td>Auto-detects the OS light / dark theme:
+            <br>· Windows — via registry <code>AppsUseLightTheme</code>;
+            <br>· macOS — via <code>AppleInterfaceStyle</code>;
+            <br>· Linux — via <code>gsettings</code> / <code>kdeglobals</code> / <code>GTK_THEME</code>.</td></tr>
+    <tr><td><b>Dark</b></td><td>Force the dark palette.</td></tr>
+    <tr><td><b>Light</b></td><td>Force the light palette.</td></tr>
+</table>
+
+<!-- ============================================================ -->
+
+<h2 id="tab-about">Tab «ℹ About»</h2>
+<p>Application info and links:</p>
+<ul>
+    <li><span class="btn" style="background:#ffdd00;color:#000">☕ Buy me a coffee</span> — support development (buymeacoffee.com/borisovith).</li>
+    <li><span class="btn idle">🐙 GitHub</span> — repository link.</li>
+</ul>
+
+<!-- ============================================================ -->
+
+<h2 id="tab-lang">Tab «🌐 Language»</h2>
+<p>Select the UI language from the available ones (<code>en</code>, <code>de</code>, <code>uk</code>, <code>ru</code>). Default is English.</p>
+
+<div class="warning">
+    After changing the language, <b>restart the application</b> to refresh the UI. Language files live in the <code>lang/</code> folder next to the app. To add a new language, drop <code>xx.json</code> there modeled after <code>en.json</code>.
+</div>
+
+<!-- ============================================================ -->
+
+<h2 id="dialogs">Rule dialogs</h2>
+<p>Each rule tab (Triggers, Keywords, Numeric ranges, Intervals) opens its own dialog when you press «Add» / «Edit».</p>
+
+<table>
+    <tr><th style="width:220px">Dialog</th><th>Fields</th></tr>
+    <tr>
+        <td>Trigger</td>
+        <td>Active, Stop word.</td>
+    </tr>
+    <tr>
+        <td>Keyword</td>
+        <td>Active, Word / phrase, Part / exact match, Area (whole line / word boundaries), Text color.</td>
+    </tr>
+    <tr>
+        <td>Numeric range</td>
+        <td>Active, From, To, Area, Color.</td>
+    </tr>
+    <tr>
+        <td>Interval</td>
+        <td>Active, From (ms), To (ms), Color.</td>
+    </tr>
+</table>
+
+<p>At the bottom of each dialog — <span class="btn">Save</span>. Cancel by closing the window.</p>
+
+<!-- ============================================================ -->
+
+<h2 id="hotkeys">Hotkeys</h2>
+
+<table>
+    <tr><th style="width:280px">Shortcut</th><th>Action</th></tr>
+    <tr><td><span class="kbd">Ctrl</span> + <span class="kbd">C</span></td><td>Copy selection.</td></tr>
+    <tr><td><span class="kbd">Ctrl</span> + <span class="kbd">V</span></td><td>Paste from clipboard.</td></tr>
+    <tr><td><span class="kbd">Ctrl</span> + <span class="kbd">X</span></td><td>Cut.</td></tr>
+    <tr><td><span class="kbd">Ctrl</span> + <span class="kbd">A</span></td><td>Select all in the active field.</td></tr>
+    <tr><td><span class="kbd">Ctrl</span> + <span class="kbd">=</span> / <span class="kbd">+</span></td><td>Increase log font size.</td></tr>
+    <tr><td><span class="kbd">Ctrl</span> + <span class="kbd">-</span></td><td>Decrease log font size.</td></tr>
+    <tr><td><span class="kbd">Ctrl</span> + <span class="kbd">0</span></td><td>Reset font to 10 pt.</td></tr>
+    <tr><td><span class="kbd">Ctrl</span> + mouse wheel</td><td>Smoothly change the log font size.</td></tr>
+    <tr><td><span class="kbd">↑</span> / <span class="kbd">↓</span> in command field</td><td>Navigate command history.</td></tr>
+    <tr><td><span class="kbd">Enter</span> in search field</td><td>Next match.</td></tr>
+    <tr><td><span class="kbd">Shift</span>+<span class="kbd">Enter</span> in search field</td><td>Previous match.</td></tr>
+    <tr><td><span class="kbd">Esc</span> in search field</td><td>Clear search.</td></tr>
+</table>
+
+<!-- ============================================================ -->
+
+<h2 id="config">Files &amp; settings</h2>
+
+<h4>config.json</h4>
+<p>Created automatically next to the app on the first save. Stores:</p>
+<ul>
+    <li>UI language and theme;</li>
+    <li>last port and baud rate;</li>
+    <li>flags: auto-connect, reset on connect, display toggles (RX/TX, timestamp, interval, freeze scroll);</li>
+    <li>line limit and log font size;</li>
+    <li>all rules: triggers, keywords, numeric ranges, intervals;</li>
+    <li>macros (name + command).</li>
+</ul>
+
+<h4>lang/</h4>
+<p>Folder with language files. On the first launch of the exe, <code>en.json</code> is unpacked next to it as an example and fallback. The other languages are embedded into the exe and used unless a same-named file appears outside.</p>
+
+<div class="note">
+    <b>Priority:</b> a file in <code>lang/</code> next to the exe <b>overrides</b> the embedded one. So you can edit translations without rebuilding.
+</div>
+
+<!-- ============================================================ -->
+
+<h2 id="faq">FAQ</h2>
+
+<h4>Can't connect to the board</h4>
+<ul>
+    <li>Make sure the port appears in the list (press <b>🔄 Refresh</b>).</li>
+    <li>Check that the port isn't busy in another program (Arduino IDE, PlatformIO, PuTTY).</li>
+    <li>On Linux you may need to add your user to the <code>dialout</code> group:<br><code>sudo usermod -a -G dialout $USER</code>, then log out and back in.</li>
+</ul>
+
+<h4>Garbled text</h4>
+<p>Check the baud rate — it must match the firmware. For ESP32 it's usually 115200 or 921600.</p>
+
+<h4>A highlighting rule doesn't fire</h4>
+<ul>
+    <li>Make sure the rule is <b>Active</b> (checkbox in the dialog).</li>
+    <li>Check the mode: «Part of word» works as a substring, «Exact word» — as a whole word.</li>
+    <li>If several rules match, the <b>first matching one</b> wins (top to bottom).</li>
+</ul>
+
+<h4>Language doesn't change after selection</h4>
+<p>Restart the app. Hot language switching is not supported — the UI is built once at startup.</p>
+
+<h4>How do I reset settings?</h4>
+<p>Delete <code>config.json</code> next to the application. It will be recreated with defaults on the next launch.</p>
+
+<h4>How do I add my own language?</h4>
+<ol>
+    <li>Copy <code>lang/en.json</code> to <code>lang/xx.json</code> (xx is the language code, e.g. <code>fr</code>).</li>
+    <li>Translate the values (don't touch the keys on the left of the colon).</li>
+    <li>Change <code>"lang_name"</code> to the language name.</li>
+    <li>Restart the app — the language will appear in the list.</li>
+</ol>
+
+</div>
+
+<footer>
+    SerialB · User Manual · Made with ❤ for the community.<br>
+    Support development: <a href="https://buymeacoffee.com/borisovith" style="color:#4ec9b0">buymeacoffee.com/borisovith</a>
+</footer>
+
+</body>
+</html>
